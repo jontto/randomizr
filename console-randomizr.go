@@ -42,9 +42,14 @@ func main() {
 	previousN := -1
 	round := 0
 
-	for {
+	tm.Clear()
+	tm.MoveCursor(1,1)
+	tm.Flush()
 
-		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	for {
+		if previousN < 0 || participants[previousN].count <= 3 {
+			bufio.NewReader(os.Stdin).ReadBytes('\n')
+		}
 
 		tm.Clear()
 		tm.MoveCursor(1, 1)
