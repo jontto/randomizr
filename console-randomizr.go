@@ -15,20 +15,38 @@ type participant struct {
 	count int
 }
 
+const DEFAULT_FILENAME = "entries.txt"
+
+func readFile(filePath string) ([]string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var fileLines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fileLines = append(fileLines, scanner.Text())
+	}
+	return fileLines, err
+}
+
 func main() {
 
-	participants := []participant{
-		{"Camilo", 0},
-		{"Gaius", 0},
-		{"Jaakko", 0},
-		{"Jani", 0},
-		{"Kai", 0},
-		{"Matti", 0},
-		{"Basi", 0},
-		{"Teemu", 0},
-		{"Toni", 0},
-		{"Ville", 0},
-		{"Jonas", 0},
+	// read file
+	entriesFromFile, ferr := readFile(DEFAULT_FILENAME)
+	if ferr != nil {
+		panic(ferr)
+	}
+
+	// map file lines to participants
+	var participants []participant
+	for _, entry := range entriesFromFile {
+		part := participant{
+			name: entry,
+		}
+		participants = append(participants, part)
 	}
 
 	var b [8]byte
